@@ -36,7 +36,7 @@ class AclSet():
         if n & zk.PERM_DELETE: ret += 'd'
         if n & zk.PERM_ADMIN: ret += 'a'
         return ret
-    
+
     def _aclstr2num(self, s):
         ret = 0
         s = s.lower()
@@ -47,11 +47,15 @@ class AclSet():
             ret |= zk.PERM_ADMIN
         if 'c' in s: ret |= zk.PERM_CREATE
         return ret
-    
+
     def add(self, acl):
         if isinstance(acl, (str, unicode)):
             try:
-                scheme, id, perms = acl.split(":")
+                if len(acl.split(":")) != 3:
+                    scheme, user, password, perms = acl.split(":")
+                    id = user + ':' + password
+                else:
+                    scheme, id, perms = acl.split(":")
                 # convert it will ignore invalid number. such as perms 32 will be change to 0.
                 if perms.isdigit():
                     perms = self._aclnum2str(int(perms))
@@ -96,13 +100,17 @@ class AclSet():
     def to_dict(self):
         acls = list()
         for acl in self.acls:
-            scheme, id, perms = acl.split(':')
+            if len(acl.split(':')) != 3:
+                scheme, user, password, perms = acl.split(':')
+                id = user + ':' +  password
+            else:
+                 scheme, id, perms = acl.split(':')
             perms = int(perms)
             acls.append({'scheme': scheme,
                          'id': id,
                          'perms': perms})
         return acls
-        
+
 def set_default_retry(n):
     global _retry
     _retry = n

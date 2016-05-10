@@ -37,7 +37,7 @@ class node_func(object):
 
     def __init__(self, func):
         self.func = func
-        
+
     def __call__(self, request, path='/'):
         if not request.user.is_authenticated():
             return HttpResponse(jdumps({"error": "You need to login first."}))
@@ -213,6 +213,8 @@ def add(request, path='/'):
     control_masters.append("127.0.0.1")
     control_masters.append(socket.gethostbyname(socket.gethostname()))
     acl_set = zkutils.AclSet(["ip:%s:31" %(id) for id in control_masters])
+    default_acls = list(zkconfig.default_acl)
+    acl_set.addmany(["%s" %(acl) for acl in default_acls])
     if 'acl' in request.POST:
         acl_set.addmany(request.POST['acl'].split())
     node_data = request.POST.get('data', "")
