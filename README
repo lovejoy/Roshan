@@ -3,3 +3,15 @@ INTRO
 Roshan is a web-based administrative interface for ZooKeeper cluster.
 
 Roshan is developed with Django and Ext-js.
+
+ChangeLog
+
+Add support for digest
+
+```
+python
+>>> import hashlib
+>>> print hashlib.sha1('user:password').digest().encode('base64')
+tpUq/4Pn5A64fVZyQ0gOJ8ZWqkY=
+```
+
