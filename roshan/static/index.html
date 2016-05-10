@@ -10,10 +10,31 @@
     <script type="text/javascript" src="scripts/roshan-main.js"></script>
 </head>
 <body>
-  <!-- use class="x-hide-display" to prevent a brief flicker of the content -->
-  <div id="header"><span id="user_perms"></span><img src="css/images/roshan.png" style="vertical-align:middle;"/>&nbsp;</div>
-  <div id="welcome" class="welcome-page x-hide-display">
-    <h2>Welcome to Roshan</h2>
-  </div>
+    <!-- use class="x-hide-display" to prevent a brief flicker of the content -->
+        <div id="header"><span id="user_perms"></span><img src="css/images/roshan.png" style="vertical-align:middle;"/>&nbsp;</div>
+        <div id="welcome" class="welcome-page x-hide-display">
+        <p>真正的男人就像孤独的Roshan，不管被伤害的多深，他都能再一次站起来，而且他依然会把不朽的祝福送给那个曾今伤过他的人。</p>
+        <br />
+		<h2>Welcome to Roshan</h2>
+		<p>Roshan是一个管理Zookeeper集群资源的web系统，如果你不知道Roshan这个名称的意思，请现在就去搜索“dota地图”。（请使用百度搜索，而不是http://map.baidu.com/。截至发稿前，后者尚未收录这张地图。）</p>
+		<p></p>
+		<h3>使用方法</h3>
+		<p>1、ZooKeeper Server栏有zk服务集群的机器列表，其中<span class=leader>zookeeper-server</span>表示该机器是整个集群的带头大哥Leader。而<span class=failed>zookeeper-server</span>表示至少在你刷开Roshan的那一瞬间这台机器上的Zookeeper不是活着的（该栏的右上角有刷新机器列表的按钮）。点击机器的名字可以在新的tab栏中看到机器的详细情况。</p>
+		<p>2、Resouce Node Tree栏有zk服务的资源树，每个账号只能看到和操作已经这个号已被授权的路径。</p>
+		<h3>权限管理</h3>
+		<p>Roshan配置了几台我们自己的管理机器的ip，以保证Roshan自己拥有所有节点的管理权限。这些权限会作为新建节点时默认的权限，并且在修改节点权限的时候Roshan会保证这些权限是删不掉的。</p>
+		<p>点击权限表格工具栏中的Edit按钮，在弹出的浮动层中添写权限（格式见下），如果选中"Append Mode"（默认选中），则会使用追加模式，也就是说只加入新的授权，而不会删除或修改这个节点已有的acl。修改过程会自动去除重复的授权。</p>
+		<p><span class="bold">权限格式</span>：权限格式应为scheme:id:perms，其中scheme表示授权的方式，目前基本上都是ip方式，但你也可以使用world方式来让一个节点变得谁都可以用。id表示这个授权方式的使用者，perms表示权限，可以使用字符串或数字。</p>
+		<p>举例如：<p>
+		<p><span class="pre">ip:10.255.255.255:7</span></p>
+		<p><span class="pre">ip:10.255.255.255:rc</span></p>
+		<p><span class="pre">world:anyone:rcw</span></p>
+		<p>其权限控制位的值为：</p>
+		<p>读节点：<span class="pre">r = 1 = read</span></p>
+		<p>写节点数据：<span class="pre">w = 2 = write</span></p>
+		<p>创建节点：<span class="pre">c = 4 = create</span></p>
+		<p>删除节点：<span class="pre">d = 8 = delete</span></p>
+		<p>管理节点（修改节点权限）：<span class="pre">a = 16 = admin</span></p>
+	</div>
 </body>
 </html>

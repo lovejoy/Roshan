@@ -1,18 +1,8 @@
-1. Modify settings.py:
-    - Database configs
-    - MEDIA_ROOT is the absolute path of roshan/static
-2. Modify roshanapp/zkconf.py:
-    - control_machines is tuple of ips
-    - servers is zookeeper cluster
-3. Modify apache httpd.conf such as:
-     WSGIScriptAlias /roshan /home/eddix/roshan/roshan.wsgi
-     <Directory /home/chenxin/djcode/roshan>
-         Order deny,allow
-         Allow from all
-     </Directory>
-4. Modify statis/scripts/roshan-main.js
-     url_prefix is the prefix string for ajax request.
-     if your roshan is: http://zookeeper.myhost.com/roshan/, this should be configed as "/roshan/".
+1. ./install.sh
+2. Modify apache/conf/httpd.conf Listen to other port like 8081(recommend not start with root permission)
+3. Modify roshanapp/zkconfig.py
+4. roshan/initUser.sh
+5. start apache
+6. http://serverhostname:8081/roshan/admin add '/' to admin
+7. http://serverhostname:8081/roshan
 
-Default account:
-    admin:admin

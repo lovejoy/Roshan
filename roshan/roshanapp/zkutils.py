@@ -41,10 +41,11 @@ class AclSet():
         ret = 0
         s = s.lower()
         if 'r' in s: ret |= zk.PERM_READ
-        if 'w' in s: ret |= zk.PERM_WRITE
+        if 'w' in s or 'd' in s or 'a' in s:
+            ret |= zk.PERM_WRITE
+            ret |= zk.PERM_DELETE
+            ret |= zk.PERM_ADMIN
         if 'c' in s: ret |= zk.PERM_CREATE
-        if 'd' in s: ret |= zk.PERM_DELETE
-        if 'a' in s: ret |= zk.PERM_ADMIN
         return ret
     
     def add(self, acl):
@@ -87,6 +88,9 @@ class AclSet():
 
     def to_display_dict(self):
         acls = self.to_dict()
+        for acl in acls:
+            if acl['perms'] == 31:
+                acl['perms'] = 7
         return acls
 
     def to_dict(self):

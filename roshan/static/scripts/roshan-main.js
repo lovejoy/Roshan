@@ -9,7 +9,7 @@ Ext.onReady(function(){
 	 * nodetree_root is a config variable. Change this to the default expand path as you wish.
 	 */
 	// var nodetree_root = '/';
-	var url_prefix = "/iroshan/";
+	var url_prefix = "/roshan/";
 	
 	var g_server_data;
 	var g_node_data;

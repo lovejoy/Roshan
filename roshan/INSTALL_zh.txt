@@ -1,33 +1,16 @@
-1����װsqlite3��
-./configure --prefix=~/opt
-make && make install
-2����װpython2.6��
-./configure --prefix=~/opt
-make && make install
-��Python2.6��sqlite3���밲��ͬһĿ¼������֮���޸���Ӧ�Ļ���������
-3����װapache:
-./configure --prefix=~/apache
-make && make install
-4����װmod_wsgi:
-./configure --prefix=~/apache
-5����װDjango��
-python setup.py install
-
-1.�޸�settings.py:
-    - Database configs
-    - MEDIA_ROOT����Ϊroshan/static�ľ���·����
-2. �޸�roshanapp/zkconf.py:
-    - control_machines is tuple of ips��Ϊÿ��zk�ڵ��Ĭ�Ϲ���Ȩ�ޡ�
-    - servers is zookeeper cluster
-3. Modify apache httpd.conf such as:
-     WSGIScriptAlias /roshan /home/eddix/roshan/roshan.wsgi
-     <Directory /home/chenxin/djcode/roshan>
-         Order deny,allow
-         Allow from all
-     </Directory>
-4. Modify statis/scripts/roshan-main.js
-     url_prefix is the prefix string for ajax request.
-     if your roshan is: http://zookeeper.myhost.com/roshan/, this should be configed as "/roshan/".
-
-Default account:
-    admin:admin
+1、部署roshan：
+把整个目录放到你最终要部署的地方
+2、执行安装脚本：
+./install.sh
+3、修改apache的端口:
+apache/conf/httpd.conf 修改LISTEN为非1024以下的端口比如8081,如果你用root启动可以不用修改
+4、编辑roshan/roshanapp/zkconfig.py，配置zookeeper服务器地址：
+control_machines为拥有最高权限的机器，建议写上所有zookeeper的ip同时不要删除127.0.0.1
+5、初始化管理员账户：
+roshan/initUser.sh 
+#根据提示设置用户名、邮箱、密码。
+6、启动apache服务器
+7、浏览器中访问http://serverhostname:8081/roshan/admin，设置用户的path为“/”（在add path的界面中，选中账号，在输入框中输入/)
+你可以新建账户然后授予不同的路径的权限
+8、访问http://serverhostname:8081/roshan，可以对zookeeper进行操作。
+ubuntu 报错时按这个处理后重新编译http://joequery.me/guides/python26-no-module-sha256/

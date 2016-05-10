@@ -35,6 +35,7 @@ class ZkutilsTestCase(unittest.TestCase):
     def testWorldScheme(self):
         self.acl_set.add("world:anyone:31")
         assert "world:anyone:31" in self.acl_set.to_string()
+        print self.acl_set.to_dict()
 
 if __name__ == '__main__':
     unittest.main()

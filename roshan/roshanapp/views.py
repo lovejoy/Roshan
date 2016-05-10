@@ -1,3 +1,4 @@
+import logging
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import auth
 from roshan.roshanapp.models import *
@@ -56,11 +57,13 @@ class node_func(object):
         if check_path_perm(request, path):
             global zh
             zh = zkutils.inithandler(zkconfig.servers)
+            logging.debug("create zookeeper handler %d "%zh)
             try:
                 ret = self.func(request, path)
             except Exception, errmsg:
                 ret = HttpResponse(jdumps({"error": "Call function error: " + str(errmsg)}))
-            zk.close(zh)
+            r = zk.close(zh)
+            logging.debug("close zookeeper handler %d  return %d"%(zh,r))
             return ret
         else:
             return HttpResponse(jdumps({"error": "You are denied to access this node."}))
@@ -91,6 +94,7 @@ def login(request):
         user = auth.authenticate(username=username, password=password)
         if user is not None and user.is_active:
             auth.login(request, user)
+            logging.debug("user %s login success" % user)
             return HttpResponse('ok')
         else:
             return HttpResponse('username or password is incorrect')
@@ -169,6 +173,9 @@ def get(request, path='/'):
             node_dict['acl'].append(acl)
 
     stat,data = zkutils._get(zh,path)
+    logging.debug("get data from %s " % path)
+    logging.debug("stat: %s " % str(stat))
+    logging.debug("data: %s " % str(data))
     if stat != False:
         node_dict['data'] = data
     else:
@@ -205,9 +212,12 @@ def add(request, path='/'):
     control_masters = list(zkconfig.control_machines)
     control_masters.append("127.0.0.1")
     control_masters.append(socket.gethostbyname(socket.gethostname()))
-    default_acl = zkutils.AclSet(["ip:%s:31" %(id) for id in control_masters])
+    acl_set = zkutils.AclSet(["ip:%s:31" %(id) for id in control_masters])
+    if 'acl' in request.POST:
+        acl_set.addmany(request.POST['acl'].split())
+    node_data = request.POST.get('data', "")
     try:
-        ret = zk.create(zh, path, "", default_acl.to_dict())
+        ret = zk.create(zh, path, node_data, acl_set.to_dict())
         if ret == path:
             return HttpResponse(jdumps({'status':'ok'}))
         else:

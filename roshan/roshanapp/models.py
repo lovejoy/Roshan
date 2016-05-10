@@ -4,7 +4,7 @@ from django.db import models
 class Path(models.Model):
     users = models.ManyToManyField(User)
     path = models.CharField(max_length=512)
-    perm = models.BooleanField()
+    perm = models.BooleanField(default=True)
     
     def __unicode__(self):
         if self.perm:
