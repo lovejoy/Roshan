@@ -1,12 +1,7 @@
-INTRO
+Roshan是一个管理zookeeper集群的系统，这里主要是添加了下对digest功能的支持
 
-Roshan is a web-based administrative interface for ZooKeeper cluster.
+其他见原repo
 
-Roshan is developed with Django and Ext-js.
-
-ChangeLog
-
-Add support for digest
 
 ```
 python
@@ -14,4 +9,3 @@ python
 >>> print hashlib.sha1('user:password').digest().encode('base64')
 tpUq/4Pn5A64fVZyQ0gOJ8ZWqkY=
 ```
-
