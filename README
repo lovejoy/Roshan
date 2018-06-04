@@ -1,3 +1,10 @@
+Roshan is a web-based administrative interface for ZooKeeper cluster.
+
+Roshan is developed with Django and Ext-js.
+
+What i do here is add a support for digset.
+
+
 Roshan是一个管理zookeeper集群的系统，这里主要是添加了下对digest功能的支持
 
 其他见原repo
